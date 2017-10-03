@@ -22,7 +22,7 @@
 #include "usbdrv.h"
 #include "isp.h"
 #include "clock.h"
-#include "tpi.h"
+#include "tpi.h"	//  Atmel Tiny Programming Interface (TPI)
 #include "tpi_defs.h"
 
 static uchar replyBuffer[8];
@@ -47,9 +47,9 @@ static uchar prog_pagecounter;
 
 
 
-ISR(SPI_STC_vect, ISR_NOBLOCK)
+ISR(SPI_STC_vect, ISR_NOBLOCK)	// interrupt service register
 {
-    comBuffer[comStop] = SPDR;
+    comBuffer[comStop] = SPDR;	// spi data register
     comStop ++;
 }
 
@@ -369,7 +369,7 @@ int main(void) {
 	DDRB = (1 << PB2 | 1 << PB3 | 1 << PB5);
 	PORTB &= (1 << PB2);
 	SPCR = (1 << SPE | 1 << MSTR);
-	sei();
+	sei();		// set global interrupt flag
 	for (;;) {
 		clockWait(30); // wait 9,6 ms
 		toggleLedRed();
@@ -381,7 +381,7 @@ int main(void) {
 	}
 #endif
 
-	sei();
+	sei();		// set global interrupt flag
 	for (;;) {
 		usbPoll();
 		if (prog_state == PROG_STATE_SERIAL) {
